@@ -1,0 +1,45 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/DockerfileDev
+    volumes: 
+      - backend_static:/app/staticfiles
+      - ./backend:/app 
+    env_file:
+      - .env
+    # depends_on:
+    #   - db
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    environment:
+      - VITE_API_URL=http://localhost:8000/api/v1/
+    volumes:
+      - ./frontend:/app         # mount local code for live reload
+    depends_on:
+      - backend
+      - db
+    ports:
+      - "5173:5173"
+      
+
+
+  # db:
+  #   image: postgres:15
+  #   environment:
+  #     POSTGRES_DB: ${DB_NAME}
+  #     POSTGRES_USER: ${DB_USER}
+  #     POSTGRES_PASSWORD: ${DB_PASSWORD}
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   ports:
+  #     - "5432:5432"
+
+volumes:
+  # postgres_data:
+  backend_static:
