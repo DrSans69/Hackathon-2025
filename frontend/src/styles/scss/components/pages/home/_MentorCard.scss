@@ -1,0 +1,19 @@
+.mentor {
+    width: 100%;
+
+    max-width: calc((1110px - 6 * 30px) / 5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 20px;
+    padding: 15px;
+    gap: 20px;
+    &__name{
+        font-size: 36px;
+        line-height: 1.5;
+    }
+    &__course{
+        font-size: 24px;
+        line-height: 1.5;
+    }
+}

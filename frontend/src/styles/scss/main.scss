@@ -1,4 +1,15 @@
-@use "sass:math";
+@use 'sass:math';
 
-@import "./utils/calculation";
-@import "./utils/reset";
+@import './utils/variables';
+
+@import './utils/calculation';
+@import './utils/reset';
+@import './utils/base';
+
+@import './components/Container';
+@import './components/SetMentor';
+
+@import './components/pages/home/Home';
+@import './components/pages/home/Header';
+@import './components/pages/home/Main';
+@import './components/pages/home/MentorCard';

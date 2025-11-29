@@ -1,0 +1,146 @@
+
+/* Background overlay */
+.modal__bg {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+/* Modal box */
+.modal {
+    background: $primary-dark-accent;
+    color: $primary-light;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Title */
+.modal__title {
+    margin: 0;
+    text-align: center;
+    font-size: 1.6rem;
+    font-weight: 600;
+}
+
+/* Settings layout */
+.modal__settings {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+
+    /* standard text field labels */
+    > label {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+        font-size: 0.95rem;
+    }
+
+    input[type="text"],
+    select {
+        padding: 0.5rem 0.75rem;
+        border-radius: 6px;
+        border: 1px solid $primary-dark;
+        background: $primary-light;
+        color: $primary-dark;
+    }
+}
+
+/* Fieldsets */
+fieldset {
+    border: 1px solid $primary-dark;
+    padding: 1rem;
+    border-radius: 8px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+
+    legend {
+        padding: 0 0.4rem;
+        font-size: 0.9rem;
+        color: $primary-light;
+    }
+
+    /* checkboxes + radios horizontal */
+    label {
+        display: flex;
+        flex-direction: row !important;
+        align-items: center;
+        gap: 0.6rem;
+    }
+
+    input[type="checkbox"],
+    input[type="radio"] {
+        transform: scale(1.1);
+        cursor: pointer;
+    }
+}
+
+/* Make “Now / Later” in one line */
+fieldset:has(input[name="setWhen"]) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+
+    gap: 1.2rem;
+
+    legend {
+        width: 100%;
+        margin-bottom: 0.4rem;
+    }
+}
+
+/* Extra “now” settings block */
+.modal__now-settings {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    /* checkbox labels inside this section */
+    label {
+        flex-direction: row !important;
+        align-items: center;
+        gap: 0.6rem;
+    }
+}
+
+/* Action buttons */
+.modal__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+
+    // .btn {
+    //     padding: 0.6rem 1.2rem;
+    //     border-radius: 6px;
+    //     cursor: pointer;
+    //     font-size: 0.95rem;
+    //     background: $primary-light;
+    //     color: $primary-dark;
+    //     border: none;
+
+    //     &-primary {
+    //         background: $primary-accent;
+    //         color: $primary-light;
+
+    //         &:hover {
+    //             background: $primary-accent-hover;
+    //         }
+    //     }
+
+    //     &:hover {
+    //         background: lighten($primary-light, 5%);
+    //     }
+    // }
+}
