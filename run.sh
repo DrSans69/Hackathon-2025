@@ -3,12 +3,12 @@ set -e
 
 # Name of the backend service in docker-compose
 BACKEND_SERVICE="backend"
-COMPOSE_FILE="docker-compose-dev.yml"
+COMPOSE_FILE="docker-compose.yml"
 
 # Start all services in detached mode
 echo "Starting Docker Compose..."
-docker-compose -f $COMPOSE_FILE up -d --build
-# docker-compose -f $COMPOSE_FILE up --build
+# docker compose -f $COMPOSE_FILE up -d --build
+docker compose -f $COMPOSE_FILE up --build
 
 
 # Wait for PostgreSQL to be ready
@@ -20,8 +20,8 @@ docker-compose -f $COMPOSE_FILE up -d --build
 
 # Run Django migrations
 echo "Applying Django migrations..."
-docker-compose -f $COMPOSE_FILE exec -T $BACKEND_SERVICE python manage.py makemigrations
-docker-compose -f $COMPOSE_FILE exec -T $BACKEND_SERVICE python manage.py migrate
+docker compose -f $COMPOSE_FILE exec -T $BACKEND_SERVICE python manage.py makemigrations
+docker compose -f $COMPOSE_FILE exec -T $BACKEND_SERVICE python manage.py migrate
 
 # Create superuser admin if it doesn't exist
 # echo "Creating superuser admin..."
