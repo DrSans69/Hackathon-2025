@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Menu, User, LogOut, Newspaper } from "lucide-react";
 import AuthModal from "./AuthModal";
+import ModelSelector from "./ModelSelector";
 
-const Header = ({ onMenuClick, user, onAuthSuccess, onLogout }) => {
+const Header = ({ onMenuClick, user, onAuthSuccess, onLogout, selectedModel, onModelChange }) => {
   const [showAuth, setShowAuth] = useState(false);
 
   const handleAuthSuccess = () => {
@@ -12,15 +13,7 @@ const Header = ({ onMenuClick, user, onAuthSuccess, onLogout }) => {
 
   return (
     <header className="h-14 border-b border-dark-700 flex items-center justify-between px-4 bg-dark-800">
-      {/* Menu button */}
-      {/* <button
-        onClick={onMenuClick}
-        className="p-2 text-dark-400 hover:text-dark-200 hover:bg-dark-700 rounded-lg transition-colors"
-      >
-        <Menu size={20} />
-      </button>
-       */}
-      {/* Logo */}
+      {/* Logo & Model Selector */}
       <div className="flex items-center gap-3">
         <button
           onClick={onMenuClick}
@@ -34,10 +27,14 @@ const Header = ({ onMenuClick, user, onAuthSuccess, onLogout }) => {
         >
           <Newspaper size={16} />
         </div>
-        <span className="font-bold text-lg gradient-text  block">News AI</span>
+        <span className="font-bold text-lg gradient-text block">News AI</span>
+        
+        {/* Model Selector - right next to News AI */}
+        <ModelSelector
+          selectedModel={selectedModel}
+          onModelChange={onModelChange}
+        />
       </div>
-      {/* Title */}
-      {/* <h1 className="font-semibold text-dark-100">News AI</h1> */}
 
       {/* Auth section */}
       <div className="flex items-center gap-2">

@@ -5,7 +5,7 @@ const getAuthHeaders = () => {
   return token ? { 'Authorization': `Bearer ${token}` } : {};
 };
 
-export async function sendMessage(message, conversationId = null, history = []) {
+export async function sendMessage(message, conversationId = null, history = [], model = 'gpt-4o-mini') {
   const res = await fetch(`${API_URL}/chat/`, {
     method: 'POST',
     headers: {
@@ -15,7 +15,8 @@ export async function sendMessage(message, conversationId = null, history = []) 
     body: JSON.stringify({ 
       message, 
       conversation_id: conversationId,
-      history 
+      history,
+      model  // Send model to backend
     }),
   });
   
@@ -24,9 +25,7 @@ export async function sendMessage(message, conversationId = null, history = []) 
     throw new Error(error.error || 'Failed to send message');
   }
   
-  const data = await res.json();
-  console.log('sendMessage response:', data); // Debug
-  return data;
+  return res.json();
 }
 
 export async function resetConversation() {
@@ -58,9 +57,7 @@ export async function getConversations() {
     throw new Error('Failed to fetch conversations');
   }
   
-  const data = await res.json();
-  console.log('getConversations response:', data); // Debug
-  return data;
+  return res.json();
 }
 
 export async function getConversation(id) {
@@ -70,9 +67,7 @@ export async function getConversation(id) {
   
   if (!res.ok) throw new Error('Failed to fetch conversation');
   
-  const data = await res.json();
-  console.log('getConversation response:', data); // Debug
-  return data;
+  return res.json();
 }
 
 export async function deleteConversation(id) {

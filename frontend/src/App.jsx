@@ -16,7 +16,17 @@ function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [user, setUser] = useState(null);
   const [initialLoadDone, setInitialLoadDone] = useState(false);
+  const [selectedModel, setSelectedModel] = useState(() => {
+    // Load from localStorage or default to gpt-4o-mini
+    return localStorage.getItem('selectedModel') || 'gpt-4o-mini';
+  });
   const messagesEndRef = useRef(null);
+
+  // Save model preference to localStorage
+  const handleModelChange = (modelId) => {
+    setSelectedModel(modelId);
+    localStorage.setItem('selectedModel', modelId);
+  };
 
   // Check auth and load conversations on mount
   useEffect(() => {
@@ -48,7 +58,6 @@ function App() {
     }
   };
 
-  // Called when user logs in
   const handleAuthSuccess = async () => {
     try {
       const currentUser = await authService.getCurrentUser();
@@ -61,7 +70,6 @@ function App() {
     }
   };
 
-  // Called when user logs out
   const handleLogout = () => {
     authService.logout();
     setUser(null);
@@ -71,7 +79,6 @@ function App() {
     setActiveConversationId(null);
   };
 
-  // Auto-scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
@@ -84,9 +91,10 @@ function App() {
     setIsLoading(true);
 
     try {
-      const response = await sendMessage(content, activeConversationId, history);
+      // Pass selected model to API
+      const response = await sendMessage(content, activeConversationId, history, selectedModel);
       
-      console.log('API Response:', response); // Debug log
+      console.log('API Response:', response);
       
       if (!response || !response.response) {
         throw new Error('Empty response from server');
@@ -95,25 +103,22 @@ function App() {
       const assistantMessage = { 
         role: 'assistant', 
         content: response.response,
-        hasNewsContext: response.has_news_context || false
+        hasNewsContext: response.has_news_context || false,
+        model: selectedModel // Track which model was used
       };
       
       setMessages(prev => [...prev, assistantMessage]);
       
-      // Update conversation ID if new conversation was created
       if (response.conversation_id) {
         setActiveConversationId(response.conversation_id);
-        // Reload conversations to show the new one in sidebar
         if (user) {
           await loadConversations();
         }
       }
       
-      // Update history
       if (response.history) {
         setHistory(response.history);
       } else {
-        // Build history manually if not returned
         setHistory(prev => [
           ...prev,
           { role: 'user', content },
@@ -141,7 +146,7 @@ function App() {
   const handleSelectConversation = async (id) => {
     try {
       const conversation = await getConversation(id);
-      console.log('Loaded conversation:', conversation); // Debug log
+      console.log('Loaded conversation:', conversation);
       
       setActiveConversationId(id);
       
@@ -198,6 +203,8 @@ function App() {
           user={user}
           onAuthSuccess={handleAuthSuccess}
           onLogout={handleLogout}
+          selectedModel={selectedModel}
+          onModelChange={handleModelChange}
         />
 
         {/* Messages Area */}
@@ -223,7 +230,7 @@ function App() {
           )}
         </div>
 
-        {/* Input Area - only show if there are messages */}
+        {/* Input Area */}
         {messages.length > 0 && (
           <div className="border-t border-dark-700 p-4">
             <div className="max-w-3xl mx-auto">
